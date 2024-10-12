@@ -8,7 +8,7 @@ export default function ContactScreen() {
       <TextInput style={styles.input} placeholder="Nombre" />
       <TextInput style={styles.input} placeholder="Correo electrónico" keyboardType="email-address" />
       <TextInput style={styles.input} placeholder="Mensaje" multiline numberOfLines={4} />
-      <Button title="Enviar" onPress={() => alert('Mensaje enviado!')} />
+      <Button title="Enviar" color={'#388e3c'} onPress={() => alert('Mensaje enviado!')} />
     </View>
   );
 }

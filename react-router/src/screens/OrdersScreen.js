@@ -8,7 +8,7 @@ export default function OrdersScreen() {
       <TextInput style={styles.input} placeholder="Nombre del producto" />
       <TextInput style={styles.input} placeholder="Cantidad" keyboardType="numeric" />
       <TextInput style={styles.input} placeholder="Dirección de entrega" />
-      <Button title="Enviar Pedido" onPress={() => alert('Pedido enviado!')} />
+      <Button color={'#388e3c'} title="Enviar Pedido" onPress={() => alert('Pedido enviado!')} />
     </View>
   );
 }

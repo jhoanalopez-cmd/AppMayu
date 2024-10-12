@@ -1,67 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Button, FlatList, ActivityIndicator, StyleSheet, Image } from 'react-native';
 
-// Ejemplo de API de productos (cambiar según la API real que vayas a usar)
-const API_URL = 'https://api.ejemplo.com/products';
+// Coloca tu API Key de Spoonacular aquí
+const API_KEY = '37e8413034714d4ba1d60436af628e22';
 
 export default function ProductsScreen({ navigation }) {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((json) => {
-        setData(json);
-        setLoading(false);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+    useEffect(() => {
+        const fetchVegetables = async () => {
+            try {
+                const response = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=vegetable&apiKey=${API_KEY}`);
+                const json = await response.json();
+                setData(json.results);
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+        fetchVegetables();
+    }, []);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.name}</Text>
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <Button
-        title="Ver detalles"
-        onPress={() => navigation.navigate('Details', { item })}
-      />
-    </View>
-  );
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
 
-  return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={renderItem}
-      style={styles.list}
-    />
-  );
+    const renderItem = ({ item }) => (
+        <View style={styles.item}>
+            <Text style={styles.title}>{item.name}</Text>
+            {item.image && <Image source={{ uri: `https://spoonacular.com/cdn/ingredients_100x100/${item.image}` }} style={styles.image} />}
+            <Button
+                title="Ver más"
+                onPress={() => navigation.navigate('Details', { item })} // Cambiado a "Details"
+            />
+        </View>
+    );
+
+    return (
+        <FlatList
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+            style={styles.list}
+        />
+    );
 }
 
 const styles = StyleSheet.create({
-  list: {
-    padding: 20,
-  },
-  item: {
-    backgroundColor: '#4CAF50',
-    padding: 20,
-    marginVertical: 8,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  image: {
-    width: 200,
-    height: 200,
-    marginVertical: 10,
-    borderRadius: 10,
-  },
+    list: {
+        padding: 20,
+    },
+    item: {
+        backgroundColor: '#90ee90',
+        padding: 20,
+        marginVertical: 8,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    image: {
+        width: 100,
+        height: 100,
+        marginVertical: 10,
+        borderRadius: 10,
+    },
 });
