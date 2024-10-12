@@ -5,68 +5,92 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-
 import HomeScreen from "./src/screens/HomeScreen";
-import DetailScreen from "./src/screens/DetailScreen";
-import CatScreen from "./src/screens/CatScreen";  // Importar CatScreen
+import ProductsScreen from "./src/screens/ProductsScreen";  // Pantalla para listar productos
+import DetailScreen from "./src/screens/DetailScreen";  // Pantalla de detalles del producto
+import OrdersScreen from "./src/screens/OrdersScreen";  // Pantalla futura para pedidos
+import ContactScreen from "./src/screens/ContactScreen";  // Pantalla de contacto
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-// Configuración del Stack Navigator para perros
-function DogStackNavigator() {
+// Stack Navigator para los productos y detalles
+function ProductsStackNavigator() {
   return (
-    <Stack.Navigator >
-      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Conoce acerca de los perros' }} />
-      <Stack.Screen name="Details" component={DetailScreen} options={{ title: 'Detalles' }} />
+    <Stack.Navigator>
+      <Stack.Screen name="Products" component={ProductsScreen} options={{ title: 'Productos' }} />
+      <Stack.Screen name="Details" component={DetailScreen} options={{ title: 'Detalles del producto' }} />
     </Stack.Navigator>
   );
 }
 
-// Configuración del Stack Navigator para gatos (puedes reutilizar DetailScreen si quieres)
-function CatStackNavigator() {
-  return (
-    <Stack.Navigator >
-      <Stack.Screen name="Cats" component={CatScreen} options={{ title: 'Conoce acerca de los gatos' }} />
-      <Stack.Screen name="Details" component={DetailScreen} options={{ title: 'Detalles' }} />
-    </Stack.Navigator>
-  );
-}
-
-// Configuración del Drawer Navigator
+// Drawer Navigator
 export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <Drawer.Navigator initialRouteName="Home">
+          {/* HomeScreen */}
           <Drawer.Screen
-            name="Dogs"
-            component={DogStackNavigator}
+            name="Home"
+            component={HomeScreen}
             options={{
-              drawerLabel: 'Dogs',
+              drawerLabel: 'Inicio',
               drawerIcon: ({ focused, size }) => (
                 <Ionicons
-                  name={focused ? 'paw' : 'paw-outline'}
+                  name={focused ? 'home' : 'home-outline'}
                   size={size}
                   color={focused ? '#2196F3' : '#000'}
                 />
               ),
-              drawerLabelStyle: { color: '#2196F3' },
             }}
           />
+          
+          {/* Products and Details */}
           <Drawer.Screen
-            name="Cats"
-            component={CatStackNavigator}
+            name="Products"
+            component={ProductsStackNavigator}
             options={{
-              drawerLabel: 'Cats',
+              drawerLabel: 'Productos',
               drawerIcon: ({ focused, size }) => (
                 <Ionicons
-                  name={focused ? 'sparkles' : 'sparkles-outline'}
+                  name={focused ? 'leaf' : 'leaf-outline'}
                   size={size}
-                  color={focused ? '#800080' : '#000'}
+                  color={focused ? '#4CAF50' : '#000'}
                 />
               ),
-              drawerLabelStyle: { color: '#800080' },
+            }}
+          />
+
+          {/* OrdersScreen (futura pantalla para pedidos) */}
+          <Drawer.Screen
+            name="Orders"
+            component={OrdersScreen}
+            options={{
+              drawerLabel: 'Pedidos',
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons
+                  name={focused ? 'cart' : 'cart-outline'}
+                  size={size}
+                  color={focused ? '#FF9800' : '#000'}
+                />
+              ),
+            }}
+          />
+
+          {/* ContactScreen */}
+          <Drawer.Screen
+            name="Contact"
+            component={ContactScreen}
+            options={{
+              drawerLabel: 'Contacto',
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons
+                  name={focused ? 'mail' : 'mail-outline'}
+                  size={size}
+                  color={focused ? '#FF5722' : '#000'}
+                />
+              ),
             }}
           />
         </Drawer.Navigator>
