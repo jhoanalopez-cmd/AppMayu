@@ -56,22 +56,6 @@ export default function Layout() {
               ),
             }}
           />
-          
-          {/* Products and Details */}
-          <Drawer.Screen
-            name="Products"
-            component={ProductsStackNavigator}
-            options={{
-              drawerLabel: 'Productos',
-              drawerIcon: ({ focused, size }) => (
-                <Ionicons
-                  name={focused ? 'leaf' : 'leaf-outline'}
-                  size={size}
-                  color={focused ? '#4CAF50' : '#000'}
-                />
-              ),
-            }}
-          />
 
           {/* Auth screens for Login and Register */}
           <Drawer.Screen
@@ -84,6 +68,22 @@ export default function Layout() {
                   name={focused ? 'log-in' : 'log-in-outline'}
                   size={size}
                   color={focused ? '#03A9F4' : '#000'}
+                />
+              ),
+            }}
+          />
+
+          {/* Products and Details */}
+          <Drawer.Screen
+            name="Products"
+            component={ProductsStackNavigator}
+            options={{
+              drawerLabel: 'Productos',
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons
+                  name={focused ? 'leaf' : 'leaf-outline'}
+                  size={size}
+                  color={focused ? '#4CAF50' : '#000'}
                 />
               ),
             }}
