@@ -11,116 +11,71 @@ export default function RegisterScreen({ navigation }) {
   const [documentType, setDocumentType] = useState('Cédula');
   const [documentNumber, setDocumentNumber] = useState('');
   const [phone, setPhone] = useState('');
+  const [nit, setNit] = useState('');
 
-  const handleRegister = () => {
-    // Validar que las contraseñas coincidan
+  const handleRegister = async () => {
     if (password !== confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-
-    // Manejar lógica de registro
-    console.log("Registrar con:", {
-      email,
-      password,
-      firstName,
-      lastName,
-      city,
-      documentType,
-      documentNumber,
-      phone
-    });
+  
+    const newUser = {
+      nombre: firstName,
+      apellido: lastName,
+      ciudad: city,
+      tipoDocumentoIdentidad: documentType,
+      documentoIdentidad: documentNumber,
+      nit,
+      telefono: phone,
+      correo: email,
+      contrasena: password,
+    };
+  
+    try {
+      const response = await fetch('http://127.0.0.1:8080/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+  
+      if (response.ok) {
+        alert('Registro exitoso');
+        navigation.navigate('Login');
+      } else {
+        const errorData = await response.json();
+        console.error('Error en el registro:', errorData);
+        alert(`Error al registrar usuario: ${errorData.message || 'Consulta la consola para más detalles'}`);
+      }
+    } catch (error) {
+      console.error('Error en la conexión:', error);
+      alert('Hubo un problema con la conexión al servidor');
+    }
   };
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registro</Text>
 
-      {/* Campos de nombre y apellidos */}
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre"
-        value={firstName}
-        onChangeText={setFirstName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Apellidos"
-        value={lastName}
-        onChangeText={setLastName}
-      />
-
-      {/* Ciudad */}
-      <TextInput
-        style={styles.input}
-        placeholder="Ciudad"
-        value={city}
-        onChangeText={setCity}
-      />
-
-      {/* Tipo de documento */}
+      {/* Campos del formulario */}
+      <TextInput style={styles.input} placeholder="Nombre" value={firstName} onChangeText={setFirstName} />
+      <TextInput style={styles.input} placeholder="Apellidos" value={lastName} onChangeText={setLastName} />
+      <TextInput style={styles.input} placeholder="Ciudad" value={city} onChangeText={setCity} />
       <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={documentType}
-          style={styles.picker}
-          onValueChange={(itemValue) => setDocumentType(itemValue)}
-        >
+        <Picker selectedValue={documentType} style={styles.picker} onValueChange={(itemValue) => setDocumentType(itemValue)}>
           <Picker.Item label="Cédula" value="Cédula" />
           <Picker.Item label="Cédula extranjería" value="Cédulaex" />
           <Picker.Item label="Pasaporte" value="Pasaporte" />
-          
         </Picker>
       </View>
-
-      {/* Número de documento */}
-      <TextInput
-        style={styles.input}
-        placeholder="Número de Documento"
-        value={documentNumber}
-        onChangeText={setDocumentNumber}
-        keyboardType="numeric"
-      />
-
-      {/* Teléfono */}
-      <TextInput
-        style={styles.input}
-        placeholder="Teléfono"
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
-      />
-
-      {/* Correo electrónico */}
-      <TextInput
-        style={styles.input}
-        placeholder="Correo Electrónico"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-
-      {/* Contraseña */}
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-
-      {/* Confirmar contraseña */}
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar Contraseña"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
-
-      {/* Botón de registro */}
+      <TextInput style={styles.input} placeholder="Número de Documento" value={documentNumber} onChangeText={setDocumentNumber} keyboardType="numeric" />
+      <TextInput style={styles.input} placeholder="NIT" value={nit} onChangeText={setNit} keyboardType="numeric" />
+      <TextInput style={styles.input} placeholder="Teléfono" value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
+      <TextInput style={styles.input} placeholder="Correo Electrónico" value={email} onChangeText={setEmail} keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="Contraseña" value={password} onChangeText={setPassword} secureTextEntry />
+      <TextInput style={styles.input} placeholder="Confirmar Contraseña" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry />
       <Button color={'#388e3c'} title="Registrarse" onPress={handleRegister} />
-
-      {/* Enlace para iniciar sesión */}
       <Text style={styles.link} onPress={() => navigation.navigate('Login')}>
         ¿Ya tienes cuenta? Inicia sesión aquí.
       </Text>
