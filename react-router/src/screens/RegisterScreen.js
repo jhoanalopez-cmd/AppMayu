@@ -32,13 +32,15 @@ export default function RegisterScreen({ navigation }) {
     };
   
     try {
-      const response = await fetch('http://127.0.0.1:8080/api/users', {
+      const response = await fetch('http://127.0.0.1:8082/api/users/create', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUser),
-      });
+    });
+    
+      
   
       if (response.ok) {
         alert('Registro exitoso');

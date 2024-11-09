@@ -46,7 +46,7 @@ public class UserController {
 
     // Actualizar un usuario existente
     @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User userDetails) {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setNombre(userDetails.getNombre());
@@ -72,7 +72,15 @@ public class UserController {
 
     // Eliminar un usuario
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 }
+
+

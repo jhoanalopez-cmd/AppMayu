@@ -1,3 +1,4 @@
+// Navigation.js
 import React from "react";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -8,15 +9,18 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from "./src/screens/HomeScreen";
 import ProductsScreen from "./src/screens/ProductsScreen";
 import DetailScreen from "./src/screens/DetailScreen";
-import OrdersScreen from "./src/screens/OrdersScreen";
+import OrdersScreen from "./src/screens/OrdersScreen"; // Importa OrdersScreen
 import ContactScreen from "./src/screens/ContactScreen";
-import LoginScreen from './src/screens/LoginScreen';  // Importa la pantalla de inicio de sesión
-import RegisterScreen from './src/screens/RegisterScreen';  // Importa la pantalla de registro
+import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
+import DatabaseTablesScreen from './src/screens/DatabaseTablesScreen';
+import MessagesScreen from './src/screens/MessagesScreen';
+import OrdersScreenrend from './src/screens/OrdersScreenrend';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
-// Stack Navigator para los productos y detalles
+// Stack Navigator para productos y detalles
 function ProductsStackNavigator() {
   return (
     <Stack.Navigator>
@@ -26,7 +30,7 @@ function ProductsStackNavigator() {
   );
 }
 
-// Stack Navigator para el inicio de sesión y registro
+// Stack Navigator para autenticación
 function AuthStackNavigator() {
   return (
     <Stack.Navigator>
@@ -48,78 +52,97 @@ export default function Layout() {
             options={{
               drawerLabel: 'Inicio',
               drawerIcon: ({ focused, size }) => (
-                <Ionicons
-                  name={focused ? 'home' : 'home-outline'}
-                  size={size}
-                  color={focused ? '#2196F3' : '#000'}
-                />
+                <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={focused ? '#2196F3' : '#000'} />
               ),
             }}
           />
 
-          {/* Auth screens for Login and Register */}
+          {/* Auth Stack */}
           <Drawer.Screen
             name="Auth"
             component={AuthStackNavigator}
             options={{
               drawerLabel: 'Autenticación',
               drawerIcon: ({ focused, size }) => (
-                <Ionicons
-                  name={focused ? 'log-in' : 'log-in-outline'}
-                  size={size}
-                  color={focused ? '#03A9F4' : '#000'}
-                />
+                <Ionicons name={focused ? 'log-in' : 'log-in-outline'} size={size} color={focused ? '#03A9F4' : '#000'} />
               ),
             }}
           />
 
-          {/* Products and Details */}
+          {/* Products Stack */}
           <Drawer.Screen
             name="Products"
             component={ProductsStackNavigator}
             options={{
               drawerLabel: 'Productos',
               drawerIcon: ({ focused, size }) => (
-                <Ionicons
-                  name={focused ? 'leaf' : 'leaf-outline'}
-                  size={size}
-                  color={focused ? '#4CAF50' : '#000'}
-                />
+                <Ionicons name={focused ? 'leaf' : 'leaf-outline'} size={size} color={focused ? '#4CAF50' : '#000'} />
               ),
             }}
           />
 
-          {/* OrdersScreen */}
+          {/* Orders Screen */}
           <Drawer.Screen
             name="Orders"
             component={OrdersScreen}
             options={{
               drawerLabel: 'Pedidos',
               drawerIcon: ({ focused, size }) => (
-                <Ionicons
-                  name={focused ? 'cart' : 'cart-outline'}
-                  size={size}
-                  color={focused ? '#FF9800' : '#000'}
-                />
+                <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={focused ? '#FF9800' : '#000'} />
               ),
             }}
           />
 
-          {/* ContactScreen */}
+          {/* Contact Screen */}
           <Drawer.Screen
             name="Contact"
             component={ContactScreen}
             options={{
               drawerLabel: 'Contacto',
               drawerIcon: ({ focused, size }) => (
-                <Ionicons
-                  name={focused ? 'mail' : 'mail-outline'}
-                  size={size}
-                  color={focused ? '#FF5722' : '#000'}
-                />
+                <Ionicons name={focused ? 'mail' : 'mail-outline'} size={size} color={focused ? '#FF5722' : '#000'} />
               ),
             }}
           />
+
+          {/* Database Tables Screen */}
+          <Drawer.Screen
+            name="Users"
+            component={DatabaseTablesScreen}
+            options={{
+              drawerLabel: 'Datos de usuarios',
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons name={focused ? 'grid' : 'grid-outline'} size={size} color={focused ? '#9C27B0' : '#000'} />
+              ),
+            }}
+          />
+
+          {/* Messages Screen */}
+          <Drawer.Screen
+            name="Messages"
+            component={MessagesScreen}
+            options={{
+              drawerLabel: 'Mensajes',
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons name={focused ? 'chatbox' : 'chatbox-outline'} size={size} color={focused ? '#FF5722' : '#000'} />
+              ),
+            }}
+          />
+
+         {/* Orders Screen */}
+         <Drawer.Screen
+            name="Orders database"
+            component={OrdersScreenrend}
+            options={{
+              drawerLabel: 'Base de datos Pedidos',
+              drawerIcon: ({ focused, size }) => (
+                <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={focused ? '#FF9800' : '#000'} />
+              ),
+            }}
+          />
+
+
+
         </Drawer.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>

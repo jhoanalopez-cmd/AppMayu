@@ -6,10 +6,55 @@ export default function OrdersScreen() {
   const [quantity, setQuantity] = useState('');
   const [email, setEmail] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // Para manejar el estado de la solicitud
 
-  const handleSubmit = () => {
-    // Aquí se puedes manejar el envío del pedido, por ejemplo, haciendo una llamada a la API.
-    Alert.alert('Pedido enviado!', `Producto: ${productName}\nCantidad: ${quantity}\nCorreo: ${email}\nDirección: ${deliveryAddress}`);
+  const handleSubmit = async () => {
+    // Validar los campos
+    if (!productName || !quantity || !email || !deliveryAddress) {
+      alert("Error", "Por favor complete todos los campos.");
+      return;
+    }
+
+    // Crear el objeto de datos a enviar
+    const newOrder = {
+      productName,
+      quantity: parseInt(quantity),
+      email,
+      deliveryAddress
+    };
+
+    setIsSubmitting(true); // Inicia el estado de envío
+
+    try {
+      // Hacer la solicitud POST al backend
+      const response = await fetch('http://localhost:8082/api/orders/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newOrder),
+      });
+
+      setIsSubmitting(false); // Finaliza el estado de envío
+
+      if (response.ok) {
+        const result = await response.json();
+        alert('Pedido Enviado', `Pedido registrado exitosamente:\nProducto: ${result.productName}\nCantidad: ${result.quantity}\nCorreo: ${result.email}\nDirección: ${result.deliveryAddress}`);
+        
+        // Limpiar el formulario si la respuesta es exitosa
+        setProductName('');
+        setQuantity('');
+        setEmail('');
+        setDeliveryAddress('');
+
+      } else {
+        alert('Error', 'No se pudo registrar el pedido. Por favor intente de nuevo.');
+      }
+    } catch (error) {
+      setIsSubmitting(false); // Finaliza el estado de envío en caso de error
+      console.error("Error al enviar el pedido:", error);
+      alert('Error', 'Hubo un problema al enviar el pedido.');
+    }
   };
 
   return (
@@ -41,7 +86,12 @@ export default function OrdersScreen() {
         value={deliveryAddress}
         onChangeText={setDeliveryAddress}
       />
-      <Button color={'#388e3c'} title="Enviar Pedido" onPress={handleSubmit} />
+      <Button
+        color={'#388e3c'}
+        title={isSubmitting ? "Enviando..." : "Enviar Pedido"}
+        onPress={handleSubmit}
+        disabled={isSubmitting} // Deshabilita el botón mientras se envía el pedido
+      />
     </View>
   );
 }
